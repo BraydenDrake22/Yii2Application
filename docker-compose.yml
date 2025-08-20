@@ -1,0 +1,50 @@
+version: "3.9"
+
+
+services:
+  php:
+    build: ./php
+    container_name: yii2-php
+    volumes:
+      - ./app:/app
+      - ./config-template/db.php:/bootstrap-config/db.php:ro
+    environment:
+      APP_ENV: dev
+      PHP_IDE_CONFIG: serverName=localhost
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: yii2
+      DB_USER: yii2
+      DB_PASSWORD: yii2
+    depends_on:
+      - db
+
+
+  web:
+    build: ./apache
+    container_name: yii2-web
+    ports:
+      - "8080:80"
+    volumes:
+      - ./app:/app:delegated
+      - ./apache/vhost.conf:/usr/local/apache2/conf/extra/yii2-vhost.conf:ro
+    depends_on:
+      - php
+
+
+  db:
+    image: mariadb:10.11
+    container_name: yii2-db
+    environment:
+      MARIADB_DATABASE: ${DB_NAME}
+      MARIADB_USER: ${DB_USER}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    ports:
+      - "33060:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+
+
+volumes:
+  db-data:
