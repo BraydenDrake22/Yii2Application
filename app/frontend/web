@@ -1,0 +1,10 @@
+DocumentRoot "/app/frontend/web"
+<Directory "/app/frontend/web">
+    AllowOverride All
+    Require all granted
+    Options FollowSymLinks
+</Directory>
+
+<FilesMatch "\.php$">
+  SetHandler "proxy:fcgi://php:9000"
+</FilesMatch>
