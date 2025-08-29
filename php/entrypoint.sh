@@ -22,5 +22,6 @@ if [ -f /app/yii ]; then
   php /app/yii migrate --interactive=0 || echo "[init] No migrations or migration step skipped."
 fi
 
-# Keep container alive
 exec php-fpm -F
+php /app/yii migrate --interactive=0 || echo "[init] No migrations to run."
+
