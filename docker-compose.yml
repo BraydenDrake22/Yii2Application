@@ -6,7 +6,7 @@ services:
       - ./app:/app
       - ./config-template/db.php:/bootstrap-config/db.php:ro
     environment:
-      APP_ENV: dev
+      APP_ENV: Development
       PHP_IDE_CONFIG: serverName=localhost
       DB_HOST: db
       DB_PORT: 3306
