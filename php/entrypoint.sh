@@ -1,26 +1,70 @@
 #!/bin/sh
-set -euo pipefail
+set -eu
 
-mkdir -p /app
+APP_DIR=/app
+YII_ENV="${YII_ENV:-Development}" 
+PHP_FPM_CMD="${PHP_FPM_CMD:-php-fpm -F}"
 
-if [ -z "$(ls -A /app 2>/dev/null || true)" ]; then
-  echo "[init] /app is empty - creating Yii2 basic project..."
-  composer create-project yiisoft/yii2-app-basic /app --prefer-dist --no-interaction
+echo "[entrypoint] starting (env=$YII_ENV)"
 
-  echo "[init] Applying DB config from env..."
-  if [ -f /bootstrap-config/db.php ]; then
-    cp /bootstrap-config/db.php /app/config/db.php
+mkdir -p "$APP_DIR"
+
+FRONT_INDEX="$APP_DIR/frontend/web/index.php"
+BACK_INDEX="$APP_DIR/backend/web/index.php"
+
+needs_init=0
+if [ ! -f "$FRONT_INDEX" ] || [ ! -f "$BACK_INDEX" ]; then
+  needs_init=1
+fi
+
+if [ ! -d "$APP_DIR/vendor" ]; then
+  needs_init=1
+fi
+
+if [ "$needs_init" -eq 1 ]; then
+  echo "[entrypoint] Yii2 advanced not initialized; running composer install + php init..."
+  composer install --no-interaction --prefer-dist
+
+  php "$APP_DIR/init" --env="$YII_ENV" --overwrite=All
+else
+  echo "[entrypoint] Yii2 advanced appears initialized; skipping init."
+fi
+
+if [ -f /bootstrap-config/db.php ]; then
+  if [ -d "$APP_DIR/common/config" ]; then
+    echo "[entrypoint] applying DB config to common/config/db.php"
+    cp /bootstrap-config/db.php "$APP_DIR/common/config/db.php" || true
+  elif [ -d "$APP_DIR/config" ]; then
+    echo "[entrypoint] applying DB config to config/db.php"
+    cp /bootstrap-config/db.php "$APP_DIR/config/db.php" || true
   fi
 fi
 
-mkdir -p /app/runtime /app/web/assets
-chown -R www-data:www-data /app/runtime /app/web/assets || true
-chmod -R 775 /app/runtime /app/web/assets || true
+for p in \
+  "$APP_DIR/frontend/runtime" \
+  "$APP_DIR/frontend/web/assets" \
+  "$APP_DIR/backend/runtime" \
+  "$APP_DIR/backend/web/assets" \
+  "$APP_DIR/console/runtime" \
+  "$APP_DIR/common/runtime"
+do
+  mkdir -p "$p"
+done
 
-if [ -f /app/yii ]; then
-  echo "[init] Running Yii migrations (if any)..."
-  php /app/yii migrate --interactive=0 || echo "[init] No migrations or migration step skipped."
+chown -R www-data:www-data \
+  "$APP_DIR/frontend/runtime" "$APP_DIR/frontend/web/assets" \
+  "$APP_DIR/backend/runtime"  "$APP_DIR/backend/web/assets" \
+  "$APP_DIR/console/runtime"  "$APP_DIR/common/runtime" || true
+
+chmod -R u+rwX,go-w \
+  "$APP_DIR/frontend/runtime" "$APP_DIR/frontend/web/assets" \
+  "$APP_DIR/backend/runtime"  "$APP_DIR/backend/web/assets" \
+  "$APP_DIR/console/runtime"  "$APP_DIR/common/runtime" || true
+
+if [ -f "$APP_DIR/yii" ]; then
+  echo "[entrypoint] running migrations (if any)..."
+  php "$APP_DIR/yii" migrate --interactive=0 || echo "[entrypoint] no migrations or skipped."
 fi
 
-# Keep container alive
-exec php-fpm -F
+echo "[entrypoint] launching php-fpm"
+exec $PHP_FPM_CMD
