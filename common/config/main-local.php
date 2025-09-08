@@ -1,17 +1,20 @@
 <?php
 return [
-  'components' => [
-    'db' => [
-      'class' => 'yii\db\Connection',
-      'dsn' => 'mysql:host=' . getenv('DB_HOST') . ';port=' . getenv('DB_PORT') . ';dbname=' . getenv('DB_NAME'),
-      'username' => getenv('DB_USER'),
-      'password' => getenv('DB_PASSWORD'),
-      'charset' => 'utf8',
+    'components' => [
+        'db' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=yii2-db;port=3306;dbname=yii2advanced',
+            'username' => 'yii2advanced',
+            'password' => 'secret',
+            'charset' => 'utf8mb4',
+            'attributes' => [
+                PDO::ATTR_TIMEOUT => 5,
+            ],
+        ],
+        'mailer' => [
+          'class' => \yii\symfonymailer\Mailer::class,
+          'viewPath' => '@common/mail',
+          'useFileTransport' => true,
+      ],
     ],
-    'mailer' => [
-      'class' => yii\swiftmailer\Mailer::class,
-      // for development: writes emails to files under runtime/mail
-      'useFileTransport' => true,
-    ],
-  ],
 ];
