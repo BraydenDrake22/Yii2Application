@@ -1,13 +1,18 @@
 <?php
 return [
+    'vendorPath' => dirname(__DIR__, 2) . '/vendor',
+
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
-    'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
+
     'components' => [
-        'cache' => [
-            'class' => \yii\caching\FileCache::class,
+        'db' => require __DIR__ . '/db.php',
+        'mailer' => [
+            'class' => \yii\symfonymailer\Mailer::class,
+            'useFileTransport' => false,
+            'viewPath' => '@common/mail',
+          ],
         ],
-    ],
 ];
