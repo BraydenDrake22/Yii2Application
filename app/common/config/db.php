@@ -1,5 +1,5 @@
 <?php
-$host = getenv('DB_HOST') ?: 'db';
+$host = getenv('DB_HOST') ?: 'db';  
 $port = getenv('DB_PORT') ?: '3306';
 $db   = getenv('DB_NAME') ?: 'yii2';
 $user = getenv('DB_USER') ?: 'yii2';

@@ -31,12 +31,11 @@ services:
 
   db:
     image: mariadb:10.11
-    container_name: yii2-db
     environment:
-      MARIADB_DATABASE: ${DB_NAME}
-      MARIADB_USER: ${DB_USER}
-      MARIADB_PASSWORD: ${DB_PASSWORD}
-      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-verysecret}
+      MARIADB_DATABASE: ${DB_NAME:-yii2}
+      MARIADB_USER: ${DB_USER:-yii2}
+      MARIADB_PASSWORD: ${DB_PASSWORD:-yii2}
     ports:
       - "33060:3306"
     volumes:
