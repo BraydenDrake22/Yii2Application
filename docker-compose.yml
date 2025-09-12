@@ -4,7 +4,6 @@ services:
     container_name: yii2-php
     volumes:
       - ./app:/app
-      - ./config-template/db.php:/bootstrap-config/db.php:ro
     environment:
       APP_ENV: Development
       PHP_IDE_CONFIG: serverName=localhost
