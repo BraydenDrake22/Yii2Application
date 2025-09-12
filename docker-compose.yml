@@ -1,21 +1,18 @@
-version: "3.9"
-
-
 services:
   php:
     build: ./php
     container_name: yii2-php
     volumes:
       - ./app:/app
-      - ./config-template/db.php:/bootstrap-config/db.php:ro
     environment:
-      APP_ENV: dev
+      APP_ENV: Development
       PHP_IDE_CONFIG: serverName=localhost
       DB_HOST: db
       DB_PORT: 3306
       DB_NAME: yii2
       DB_USER: yii2
       DB_PASSWORD: yii2
+      MAIL_DSN: smtp://mail:1025
     depends_on:
       - db
 
@@ -34,17 +31,21 @@ services:
 
   db:
     image: mariadb:10.11
-    container_name: yii2-db
     environment:
-      MARIADB_DATABASE: ${DB_NAME}
-      MARIADB_USER: ${DB_USER}
-      MARIADB_PASSWORD: ${DB_PASSWORD}
-      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-verysecret}
+      MARIADB_DATABASE: ${DB_NAME:-yii2}
+      MARIADB_USER: ${DB_USER:-yii2}
+      MARIADB_PASSWORD: ${DB_PASSWORD:-yii2}
     ports:
       - "33060:3306"
     volumes:
       - db-data:/var/lib/mysql
 
+  mail:
+    image: axllent/mailpit:latest
+    ports:
+      - "8025:8025"
+      - "1025:1025"
 
 volumes:
   db-data:
