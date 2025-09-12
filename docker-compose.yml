@@ -12,6 +12,7 @@ services:
       DB_NAME: yii2
       DB_USER: yii2
       DB_PASSWORD: yii2
+      MAIL_DSN: smpt://mail:1025
     depends_on:
       - db
 
