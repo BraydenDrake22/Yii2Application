@@ -12,7 +12,12 @@ return [
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
     'modules' => [],
+
+    'layout' => '@common/views/layouts/main',
+
     'components' => [
+        'assetManager' => ['appendTimestamp' => true],
+
         'request' => [
             'csrfParam' => '_csrf-backend',
         ],
@@ -22,7 +27,6 @@ return [
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
         ],
         'session' => [
-            // this is the name of the session cookie used for login on the backend
             'name' => 'advanced-backend',
         ],
         'log' => [
@@ -41,8 +45,7 @@ return [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => [
-            ],
+            'rules' => [],
         ],
         */
     ],

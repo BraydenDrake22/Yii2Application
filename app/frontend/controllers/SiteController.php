@@ -256,4 +256,19 @@ class SiteController extends Controller
             'model' => $model
         ]);
     }
+
+    public function actionUiTest()
+    {
+    $model = new \frontend\models\ContactForm(); // or any simple model
+    $dataProvider = new \yii\data\ArrayDataProvider([
+        'allModels' => [
+            ['id' => 1, 'name' => 'Alice', 'email' => 'alice@example.com'],
+            ['id' => 2, 'name' => 'Bob',   'email' => 'bob@example.com'],
+        ],
+        'pagination' => ['pageSize' => 10],
+    ]);
+    $detailModel = (object)['id' => 99, 'title' => 'Sample', 'status' => 'Active'];
+    return $this->render('ui-test', compact('model','dataProvider','detailModel'));
+    }
+
 }
