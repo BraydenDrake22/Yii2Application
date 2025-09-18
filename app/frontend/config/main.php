@@ -11,7 +11,9 @@ return [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
+    'layout' => '@common/views/layouts/main',
     'components' => [
+        'assetManager' => ['appendTimestamp' => true],
         'request' => [
             'csrfParam' => '_csrf-frontend',
         ],
@@ -21,7 +23,6 @@ return [
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
         ],
         'session' => [
-            // this is the name of the session cookie used for login on the frontend
             'name' => 'advanced-frontend',
         ],
         'log' => [
