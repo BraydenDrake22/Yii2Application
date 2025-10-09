@@ -2,8 +2,10 @@
 use common\assets\CoreUiAsset;
 use yii\helpers\Html;
 use yii\widgets\Breadcrumbs;
+use yii\web\YiiAsset;
 
 CoreUiAsset::register($this);
+YiiAsset::register($this);
 $this->registerCsrfMetaTags();
 $this->registerCssFile('@web/css/site-coreui.css', ['depends' => [CoreUiAsset::class]]);
 
