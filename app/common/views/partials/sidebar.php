@@ -6,6 +6,7 @@ $isBackend = Yii::$app->id === 'app-backend';
 $frontendItems = [
   ['label' => 'Dashboard', 'url' => ['/site/index'], 'icon' => 'cil-speedometer'],
   ['label' => 'UI Test',   'url' => ['/site/ui-test'], 'icon' => 'cil-layers'],
+  ['label' => 'Bug Report', 'url' => ['/bugs'], 'icon' => 'cil-list'],
 ];
 
 $backendItems = [
@@ -13,6 +14,7 @@ $backendItems = [
   ['label' => 'Users',      'url' => ['/user/index'], 'icon' => 'cil-user'],
   ['label' => 'Reports',    'url' => ['/report/index'], 'icon' => 'cil-chart-line'],
   ['label' => 'UI Test',    'url' => ['/site/ui-test'], 'icon' => 'cil-layers'],
+  ['label' => 'Bug Report', 'url' => ['/bugs'], 'icon' => 'cil-list'],
 ];
 
 $items = $isBackend ? $backendItems : $frontendItems;
