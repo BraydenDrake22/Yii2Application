@@ -31,7 +31,8 @@
         "codeception/module-filesystem": "^3.0 || ^2.0 || ^1.1",
         "codeception/verify": "^3.0 || ^2.2",
         "codeception/module-phpbrowser": "^3",
-        "symfony/dotenv": "^6"
+        "symfony/dotenv": "^6",
+        "codeception/module-db": "^3.2"
     },
     "autoload": {
         "psr-4": {

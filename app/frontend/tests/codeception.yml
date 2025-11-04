@@ -1,0 +1,10 @@
+namespace: frontend\tests
+paths:
+  tests: .
+  output: _output
+  data: _data
+  support: _support
+bootstrap: _bootstrap.php
+settings:
+  shuffle: false
+  lint: true

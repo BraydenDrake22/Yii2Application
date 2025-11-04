@@ -11,10 +11,9 @@ $this->title = $model->title;
             <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-secondary']) ?>
 
             <?php
-            // No-JS delete: real POST form with CSRF, so VerbFilter allows it
             echo Html::beginForm(['delete', 'id' => $model->id], 'post', [
                 'data-pjax' => '0',
-                'class'     => 'd-inline-block', // keeps it inline with the Update button
+                'class'     => 'd-inline-block',
             ]);
             echo Html::hiddenInput(Yii::$app->request->csrfParam, Yii::$app->request->getCsrfToken());
             echo Html::submitButton('Delete', [

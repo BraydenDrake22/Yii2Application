@@ -2,5 +2,5 @@ actor: AcceptanceTester
 modules:
   enabled:
     - PhpBrowser:
-        url: 'http://web'
+        url: "http://web"
     - Asserts
